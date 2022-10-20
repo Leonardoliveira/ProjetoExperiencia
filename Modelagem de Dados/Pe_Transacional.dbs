@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MySql" id="Project-13c7" database="MySql" >
+	<schema name="pe_transacional" >
+		<table name="tb_olist_customers_dataset" >
+			<column name="customer_id" type="VARCHAR" length="100" jt="12" />
+			<column name="customer_unique_id" type="VARCHAR" length="100" jt="12" />
+			<column name="customer_zip_code_prefix" type="VARCHAR" length="6" jt="12" />
+			<column name="customer_city" type="VARCHAR" length="45" jt="12" />
+			<column name="customer_state" type="CHAR" length="2" jt="1" />
+			<fk name="fk_tb_olist_customers_dataset_tb_olist_orders_dataset" to_schema="pe_transacional" to_table="tb_olist_orders_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="customer_id" pk="customer_id" />
+			</fk>
+			<fk name="fk_tb_olist_customers_dataset_tb_olist_geolocation_dataset" to_schema="pe_transacional" to_table="tb_olist_geolocation_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="customer_zip_code_prefix" pk="geolocation_zip_code_prefix" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_geolocation_dataset" >
+			<column name="geolocation_zip_code_prefix" type="VARCHAR" length="6" jt="12" />
+			<column name="geolocation_lat" type="VARCHAR" length="45" jt="12" />
+			<column name="geolocation_lng" type="VARCHAR" length="45" jt="12" />
+			<column name="geolocation_city" type="VARCHAR" length="45" jt="12" />
+			<column name="geolocation_state" type="CHAR" length="2" jt="1" />
+			<index name="unq_tb_olist_geolocation_dataset_geolocation_zip_code_prefix" unique="UNIQUE_KEY" >
+				<column name="geolocation_zip_code_prefix" />
+			</index>
+			<fk name="fk_tb_olist_geolocation_dataset_tb_olist_sellers_dataset" to_schema="pe_transacional" to_table="tb_olist_sellers_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="geolocation_zip_code_prefix" pk="seller_zip_code_prefix" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_order_items_dataset" >
+			<column name="order_id" type="VARCHAR" length="100" jt="12" />
+			<column name="order_item_id" type="CHAR" length="1" jt="1" />
+			<column name="product_id" type="VARCHAR" length="100" jt="12" />
+			<column name="seller_id" type="VARCHAR" length="100" jt="12" />
+			<column name="shipping_limit_date" type="VARCHAR" length="20" jt="12" />
+			<column name="price" type="VARCHAR" length="10" jt="12" />
+			<column name="freight_value" type="VARCHAR" length="10" jt="12" />
+			<index name="unq_tb_olist_order_items_dataset_product_id" unique="UNIQUE_KEY" >
+				<column name="product_id" />
+			</index>
+			<index name="unq_tb_olist_order_items_dataset_seller_id" unique="UNIQUE_KEY" >
+				<column name="seller_id" />
+			</index>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_order_payments_dataset" >
+			<column name="order_id" type="VARCHAR" length="100" jt="12" />
+			<column name="payment_sequential" type="VARCHAR" length="2" jt="12" />
+			<column name="payment_type" type="VARCHAR" length="15" jt="12" />
+			<column name="payment_installments" type="VARCHAR" length="2" jt="12" />
+			<column name="payment_value" type="VARCHAR" length="10" jt="12" />
+			<fk name="fk_tb_olist_order_payments_dataset_tb_olist_orders_dataset" to_schema="pe_transacional" to_table="tb_olist_orders_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_order_reviews_dataset" >
+			<column name="review_id" type="VARCHAR" length="100" jt="12" />
+			<column name="order_id" type="VARCHAR" length="100" jt="12" />
+			<column name="review_score" type="VARCHAR" length="2" jt="12" />
+			<column name="review_comment_title" type="VARCHAR" length="50" jt="12" />
+			<column name="review_comment_message" type="VARCHAR" length="100" jt="12" />
+			<column name="review_creation_date" type="VARCHAR" length="20" jt="12" />
+			<column name="review_answer_timestamp" type="VARCHAR" length="20" jt="12" />
+			<fk name="fk_tb_olist_order_reviews_dataset_tb_olist_orders_dataset" to_schema="pe_transacional" to_table="tb_olist_orders_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="order_id" pk="order_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_orders_dataset" >
+			<column name="order_id" type="VARCHAR" length="100" jt="12" />
+			<column name="customer_id" type="VARCHAR" length="100" jt="12" />
+			<column name="order_status" type="VARCHAR" length="15" jt="12" />
+			<column name="order_purchase_timestamp" type="VARCHAR" length="20" jt="12" />
+			<column name="order_approved_at" type="VARCHAR" length="20" jt="12" />
+			<column name="order_delivered_carrier_date" type="VARCHAR" length="20" jt="12" />
+			<column name="order_delivered_customer_date" type="VARCHAR" length="20" jt="12" />
+			<column name="order_estimated_delivery_date" type="VARCHAR" length="20" jt="12" />
+			<index name="unq_tb_olist_orders_dataset_order_id" unique="UNIQUE_KEY" >
+				<column name="order_id" />
+			</index>
+			<index name="unq_tb_olist_orders_dataset_customer_id" unique="UNIQUE_KEY" >
+				<column name="customer_id" />
+			</index>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_products_dataset" >
+			<column name="product_id" type="VARCHAR" length="100" jt="12" />
+			<column name="product_category_name" type="VARCHAR" length="50" jt="12" />
+			<column name="product_name_lenght" type="VARCHAR" length="2" jt="12" />
+			<column name="product_description_lenght" type="VARCHAR" length="5" jt="12" />
+			<column name="product_photos_qty" type="VARCHAR" length="2" jt="12" />
+			<column name="product_weight_g" type="VARCHAR" length="5" jt="12" />
+			<column name="product_lenght_cm" type="VARCHAR" length="3" jt="12" />
+			<column name="product_height_cm" type="VARCHAR" length="3" jt="12" />
+			<column name="product_width_cm" type="VARCHAR" length="3" jt="12" />
+			<index name="unq_tb_olist_products_dataset_product_category_name" unique="UNIQUE_KEY" >
+				<column name="product_category_name" />
+			</index>
+			<fk name="fk_tb_olist_products_dataset_tb_olist_order_items_dataset" to_schema="pe_transacional" to_table="tb_olist_order_items_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="product_id" pk="product_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_olist_sellers_dataset" >
+			<column name="seller_id" type="VARCHAR" length="100" jt="12" />
+			<column name="seller_zip_code_prefix" type="VARCHAR" length="5" jt="12" />
+			<column name="selller_city" type="VARCHAR" length="60" jt="12" />
+			<column name="seller_state" type="VARCHAR" length="2" jt="12" />
+			<index name="unq_tb_olist_sellers_dataset_seller_zip_code_prefix" unique="UNIQUE_KEY" >
+				<column name="seller_zip_code_prefix" />
+			</index>
+			<fk name="fk_tb_olist_sellers_dataset_tb_olist_order_items_dataset" to_schema="pe_transacional" to_table="tb_olist_order_items_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="seller_id" pk="seller_id" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+		<table name="tb_product_category_name_translation" >
+			<column name="product_category_name" type="VARCHAR" length="50" jt="12" />
+			<column name="product_category_name_english" type="VARCHAR" length="50" jt="12" />
+			<fk name="fk_tb_product_category_name" to_schema="pe_transacional" to_table="tb_olist_products_dataset" delete_action="cascade" update_action="cascade" >
+				<fk_column name="product_category_name" pk="product_category_name" />
+			</fk>
+			<options><![CDATA[engine=InnoDB]]></options>
+		</table>
+	</schema>
+	<connector name="MySql" database="MySql" driver_class="com.mysql.jdbc.Driver" driver_jar="mysql-connector-java-8.0.30.jar" driver_desc="Standard" host="localhost" port="3306" instance="pe_transacional" user="leonardoliveira" passwd="ZHNhYWNhZGVteTEyMw==" useSystemProxy="false" />
+	<layout name="Pe_Transacional" id="Layout-dd2" show_relation="columns" >
+		<comment><![CDATA[Pe_Transacional]]></comment>
+		<entity schema="pe_transacional" name="tb_olist_customers_dataset" color="C1D8EE" x="208" y="64" />
+		<entity schema="pe_transacional" name="tb_olist_geolocation_dataset" color="C1D8EE" x="48" y="480" />
+		<entity schema="pe_transacional" name="tb_olist_order_items_dataset" color="C1D8EE" x="624" y="304" />
+		<entity schema="pe_transacional" name="tb_olist_order_payments_dataset" color="C1D8EE" x="768" y="64" />
+		<entity schema="pe_transacional" name="tb_olist_order_reviews_dataset" color="C1D8EE" x="48" y="288" />
+		<entity schema="pe_transacional" name="tb_olist_orders_dataset" color="C1D8EE" x="352" y="288" />
+		<entity schema="pe_transacional" name="tb_olist_products_dataset" color="C1D8EE" x="896" y="224" />
+		<entity schema="pe_transacional" name="tb_olist_sellers_dataset" color="C1D8EE" x="416" y="496" />
+		<entity schema="pe_transacional" name="tb_product_category_name_translation" color="C1D8EE" x="800" y="496" />
+		<callout x="48" y="48" pointer="Round" >
+			<comment><![CDATA[Modelo Transacional]]></comment>
+		</callout>
+	</layout>
+</project>
